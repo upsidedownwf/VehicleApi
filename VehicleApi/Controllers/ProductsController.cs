@@ -18,9 +18,9 @@ namespace VehicleApi.Controllers
     {
         private readonly IProducts _products;
         private readonly IMapper mapper;
-        private readonly IPost<Products> post;
+        private readonly IGeneric<Products> post;
 
-        public ProductsController(IProducts products, IMapper mapper, IPost<Products> post)
+        public ProductsController(IProducts products, IMapper mapper, IGeneric<Products> post)
         {
             _products = products;
             this.mapper = mapper;

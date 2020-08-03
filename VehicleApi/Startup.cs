@@ -40,7 +40,7 @@ namespace VehicleApi
             services.AddScoped<ILogin, LoginServices>();
             services.AddScoped<ICategories, CategoriesServices>();
             services.AddScoped<IProducts, ProductsServices>();
-            services.AddScoped(typeof(IPost<>), typeof(PostServices<>));
+            services.AddScoped(typeof(IGeneric<>), typeof(GenericServices<>));
             //services.AddScoped<IPost<Products>, PostServices<Products>>();
 
             services.AddDbContext<VehicleApiContext>(options=> options.UseSqlServer(Configuration.GetConnectionString("VehicleConnection")));

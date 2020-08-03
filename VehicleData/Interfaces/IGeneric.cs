@@ -4,7 +4,7 @@ using System.Text;
 
 namespace VehicleApiData.Interfaces
 {
-    public interface IPost<T> where T: class
+    public interface IGeneric<T> where T: class
     {
         void Post(T model);
         void Update(T model);

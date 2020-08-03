@@ -7,11 +7,11 @@ using VehicleApiData.Interfaces;
 
 namespace VehicleApiServices.Services
 {
-    public class PostServices<T>: IPost<T> where T: class
+    public class GenericServices<T>: IGeneric<T> where T: class
     {
         private readonly VehicleApiContext _context;
 
-        public PostServices(VehicleApiContext context)
+        public GenericServices(VehicleApiContext context)
         {
             _context = context;
         }
