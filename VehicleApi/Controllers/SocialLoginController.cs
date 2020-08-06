@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,7 +37,19 @@ namespace VehicleApi.Controllers
                 return NotFound();
             return Ok(mapper.Map<Users, UsersResource>(user));
         }
+        /// <summary>
+        /// Creates a TodoItem.
+        /// </summary>
+        /// <param name="userresource"></param>
+        /// <returns>A newly created TodoItem</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item is null</response>
+        /// <response code="404">If the item is not found</response>         
         [HttpPost]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody]UsersResource userresource)
         {
             if (!ModelState.IsValid)

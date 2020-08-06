@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using AutoMapper;
 using VehicleApiData.Interfaces;
 using VehicleApiServices.Services;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
 
 namespace VehicleApi
 {
@@ -35,7 +38,25 @@ namespace VehicleApi
         {
             services.AddMvc();
             services.AddAutoMapper();
-            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "VehicleApi",
+                    Description = "A simple example ASP.NET Core Web API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Jon-Ajumobi Olamide D.",
+                        Email = "olamideajumobi@gmail.com",
+                        Url = new Uri("https://twitter.com/upsidedownwf"),
+                    }
+                });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             services.AddScoped<IMakes, MakesServices>();
             services.AddScoped<ILogin, LoginServices>();
             services.AddScoped<ICategories, CategoriesServices>();
@@ -73,6 +94,13 @@ namespace VehicleApi
             app.UseCors();
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleApi");
+                c.RoutePrefix = "swagger";
+            });
+
         }
     }
 }

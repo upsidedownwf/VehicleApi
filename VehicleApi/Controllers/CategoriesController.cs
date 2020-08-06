@@ -29,7 +29,7 @@ namespace VehicleApi.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public IActionResult PostCategories(CategoriesDto model)
+        public IActionResult PostCategories([FromBody]CategoriesDto model)
         {
             if (!ModelState.IsValid)
             {
