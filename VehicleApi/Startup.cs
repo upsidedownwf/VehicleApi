@@ -97,8 +97,8 @@ namespace VehicleApi
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "VehicleApi");
-                c.RoutePrefix = "swagger";
+                c.SwaggerEndpoint("./swagger/v1/swagger.json", "VehicleApi");
+                c.RoutePrefix = "";
             });
 
         }

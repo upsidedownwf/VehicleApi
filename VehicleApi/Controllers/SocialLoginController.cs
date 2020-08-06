@@ -38,7 +38,7 @@ namespace VehicleApi.Controllers
             return Ok(mapper.Map<Users, UsersResource>(user));
         }
         /// <summary>
-        /// Creates a TodoItem.
+        /// Logins in via OAuth and creates a saves new login if not saved before
         /// </summary>
         /// <param name="userresource"></param>
         /// <returns>A newly created TodoItem</returns>
