@@ -41,13 +41,11 @@ namespace VehicleApi.Controllers
         /// Logins in via OAuth and creates a saves new login if not saved before
         /// </summary>
         /// <param name="userresource"></param>
-        /// <returns>A newly created TodoItem</returns>
-        /// <response code="201">Returns the newly created item</response>
-        /// <response code="400">If the item is null</response>
-        /// <response code="404">If the item is not found</response>         
+        /// <returns>A newly created user resource</returns>
+        /// <response code="400">If the request is bad</response>
+        /// <response code="404">If the request is not found</response>         
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody]UsersResource userresource)
