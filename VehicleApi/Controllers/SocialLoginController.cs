@@ -42,10 +42,12 @@ namespace VehicleApi.Controllers
         /// </summary>
         /// <param name="userresource"></param>
         /// <returns>A newly created user resource</returns>
+        /// <response code="200">If the reuest is ok</response>
         /// <response code="400">If the request is bad</response>
         /// <response code="404">If the request is not found</response>         
         [HttpPost]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult Login([FromBody]UsersResource userresource)
