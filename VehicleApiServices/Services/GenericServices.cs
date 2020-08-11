@@ -6,6 +6,7 @@ using VehicleApiData.DomainModels;
 using VehicleApiData.Interfaces;
 using System.Linq.Expressions;
 using System.Linq;
+using System.Transactions;
 
 namespace VehicleApiServices.Services
 {
@@ -59,6 +60,39 @@ namespace VehicleApiServices.Services
         public IEnumerable<T> Get(Expression<Func<T, bool>> match)
         {
             return _context.Set<T>().Where(match);
+        }
+        void transaction(T model)
+        {
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    _context.Entry(model).State = EntityState.Added;
+                    _context.SaveChanges();
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                }
+            }
+
+        }
+        void alttransaction(T model)
+        {
+            using (TransactionScope transaction = new TransactionScope())
+            {
+                try
+                {
+                    _context.Entry(model).State = EntityState.Added;
+                    _context.SaveChanges();
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+
         }
     }
 }
