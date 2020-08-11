@@ -5,7 +5,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using VehicleApi.Helpers;
 using VehicleApi.Resources;
 using VehicleApiData.DomainModels;
 using VehicleApiData.HelperModel;
@@ -27,22 +29,26 @@ namespace VehicleApi.Controllers
             this.post = post;
         }
         [HttpGet]
-        public IActionResult Get([FromQuery] PageParameters pageParameter)
+        public IActionResult Get([FromQuery] PageParameters pageParameter, [FromHeader] string Pagination)
         {
+            var model = new PageHeader();
+            var models = new PageHeader();
+            models=JsonConvert.DeserializeObject<PageHeader>(Pagination);
+            JsonConvert.PopulateObject(Pagination, model);
             var products = _products.GetAll();
             var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
             var pagedproducts = PagedList<ProductsResource>.ToPagedList(result.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
-            var metadata = new
+            var metadata = new PageHeader
             {
-                pagedproducts.TotalCount,
-                pagedproducts.PageSize,
-                pagedproducts.CurrentPage,
-                pagedproducts.TotalPages,
-                pagedproducts.HasNext,
-                pagedproducts.HasPrevious
+                TotalCount= pagedproducts.TotalCount,
+                PageSize= pagedproducts.PageSize,
+                CurrentPage= pagedproducts.CurrentPage,
+                TotalPages=pagedproducts.TotalPages,
+                HasNext=pagedproducts.HasNext,
+                HasPrevious= pagedproducts.HasPrevious
             };
 
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metadata));
             
             return Ok(pagedproducts);
         }
@@ -50,6 +56,8 @@ namespace VehicleApi.Controllers
         public IActionResult GetByID(int id)
         {
             var products = _products.GetProductByID(id);
+            Expression<Func<Products, bool>> e = x => x.Id== id;
+            var products2 = post.GetSingle(e);
             if(products == null)
             {
                 return NotFound();

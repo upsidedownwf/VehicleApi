@@ -70,7 +70,9 @@ namespace VehicleApi
                 options.AddDefaultPolicy(
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200")
+                                      builder.
+                                      AllowAnyOrigin()
+                                     //WithOrigins("http://localhost:*")
                                                           .AllowAnyHeader()
                                                           .AllowAnyMethod();
                                   });
