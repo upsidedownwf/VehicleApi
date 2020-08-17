@@ -28,29 +28,35 @@ namespace VehicleApi.Controllers
             this.mapper = mapper;
             this.post = post;
         }
+        //public IActionResult Get([FromQuery] PageParameters pageParameter, [FromHeader] string Pagination)
+        //{
+        //    //var model = new PageHeader();
+        //    //var models = new PageHeader();
+        //    //models=JsonConvert.DeserializeObject<PageHeader>(Pagination);
+        //    //JsonConvert.PopulateObject(Pagination, model);
+        //    var products = _products.GetAll();
+        //    var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
+        //    var pagedproducts = PagedList<ProductsResource>.ToPagedList(result.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
+        //    var metadata = new PageHeader
+        //    {
+        //        TotalCount= pagedproducts.TotalCount,
+        //        PageSize= pagedproducts.PageSize,
+        //        CurrentPage= pagedproducts.CurrentPage,
+        //        TotalPages=pagedproducts.TotalPages,
+        //        HasNext=pagedproducts.HasNext,
+        //        HasPrevious= pagedproducts.HasPrevious
+        //    };
+
+        //    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+
+        //    return Ok(pagedproducts);
+        //}
         [HttpGet]
-        public IActionResult Get([FromQuery] PageParameters pageParameter, [FromHeader] string Pagination)
+        public IActionResult Get([FromQuery] PageParameters pageParameter)
         {
-            var model = new PageHeader();
-            var models = new PageHeader();
-            models=JsonConvert.DeserializeObject<PageHeader>(Pagination);
-            JsonConvert.PopulateObject(Pagination, model);
             var products = _products.GetAll();
             var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
-            var pagedproducts = PagedList<ProductsResource>.ToPagedList(result.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
-            var metadata = new PageHeader
-            {
-                TotalCount= pagedproducts.TotalCount,
-                PageSize= pagedproducts.PageSize,
-                CurrentPage= pagedproducts.CurrentPage,
-                TotalPages=pagedproducts.TotalPages,
-                HasNext=pagedproducts.HasNext,
-                HasPrevious= pagedproducts.HasPrevious
-            };
-
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metadata));
-            
-            return Ok(pagedproducts);
+            return Ok(result);
         }
         [HttpGet("{id}")]
         public IActionResult GetByID(int id)

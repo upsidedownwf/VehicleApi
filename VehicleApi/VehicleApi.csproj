@@ -5,6 +5,12 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <ApplicationIcon />
     <OutputType>WinExe</OutputType>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+    <PackageId>VehicleApi_Test</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Jon-Ajumobi Olamide D.</Authors>
+    <Company>olamideajumobi@gmail.com</Company>
     <StartupObject />
   </PropertyGroup>
 
