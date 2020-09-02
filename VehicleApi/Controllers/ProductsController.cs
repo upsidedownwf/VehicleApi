@@ -16,7 +16,7 @@ using VehicleApiData.Interfaces;
 namespace VehicleApi.Controllers
 {
     [Route("api/[controller]")]
-    public class ProductsController: Controller
+    public class ProductsController : Controller
     {
         private readonly IProducts _products;
         private readonly IMapper mapper;
@@ -54,6 +54,38 @@ namespace VehicleApi.Controllers
         [HttpGet]
         public IActionResult Get([FromQuery] PageParameters pageParameter)
         {
+
+            // Creates and initializes a new integer array and a new Object array.
+            int[] myIntArray = new int[5] { 1, 2, 3, 4, 5 };
+            Object[] myObjArray = new Object[5] { 26, 27, 28, 29, 30 };
+
+            // Prints the initial values of both arrays.
+            Console.WriteLine("Initially,");
+            Console.Write("integer array:");
+            Console.Write("Object array: ");
+
+            // Copies the first two elements from the integer array to the Object array.
+            Array.Copy(myIntArray, myObjArray, 2);
+
+            // Prints the values of the modified arrays.
+            Console.WriteLine("\nAfter copying the first two elements of the integer array to the Object array,");
+            Console.Write("integer array:");
+            Console.Write("Object array: ");
+
+            // Copies the last two elements from the Object array to the integer array.
+            Array.Copy(myObjArray, myObjArray.GetUpperBound(0) - 1, myIntArray, myIntArray.GetUpperBound(0) - 1, 2);
+
+            // Prints the values of the modified arrays.
+            Console.WriteLine("\nAfter copying the last two elements of the Object array to the integer array,");
+            Console.Write("integer array:");
+            Console.Write("Object array: ");
+            Array wasos = new Array[] { };
+            Array waso = Array.CreateInstance(typeof(object),2);
+            wasos.SetValue(new{b=1,c=2,d=32}, 0);
+            waso.SetValue(new { b = 1, c = 2, d = 32 }, 1);
+            waso.SetValue(new { b = 1, c = 2, d = 32 }, 2);
+
+
             var products = _products.GetAll();
             var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
             return Ok(result);
@@ -62,9 +94,9 @@ namespace VehicleApi.Controllers
         public IActionResult GetByID(int id)
         {
             var products = _products.GetProductByID(id);
-            Expression<Func<Products, bool>> e = x => x.Id== id;
+            Expression<Func<Products, bool>> e = x => x.Id == id && x.CategoryName!=null;
             var products2 = post.GetSingle(e);
-            if(products == null)
+            if (products == null)
             {
                 return NotFound();
             }
@@ -79,7 +111,7 @@ namespace VehicleApi.Controllers
                 return BadRequest(ModelState);
             }
             var products = mapper.Map<ProductsResource, Products>(model);
-           // _products.AddProducts(products);
+            // _products.AddProducts(products);
             post.Post(products);
             var product = _products.GetProductByTitle(products.Id, model.Title);
             return Created(new Uri(Request.GetEncodedUrl() + "/" + product.Id), product);

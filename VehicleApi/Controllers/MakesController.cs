@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Net.Http;
 using System.Collections.ObjectModel;
+using VehicleApiServices.HelperModels;
 
 namespace VehicleApi.Controllers
 {
@@ -38,6 +39,11 @@ namespace VehicleApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetMakeByID(int id)
         {
+
+            string s = string.Empty;
+            ExtensionMethod.doublestring("sss", out s);
+            ExtensionMethod.Main();
+            string xyz = s;
             var make = _makes.GetAllMakebyId(id);
             if (make == null)
                 return NotFound();

@@ -21,6 +21,7 @@ using VehicleApiServices.Services;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using Microsoft.Extensions.Hosting;
 
 namespace VehicleApi
 {
@@ -36,8 +37,8 @@ namespace VehicleApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
-            services.AddAutoMapper();
+            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -61,10 +62,11 @@ namespace VehicleApi
             services.AddScoped<ILogin, LoginServices>();
             services.AddScoped<ICategories, CategoriesServices>();
             services.AddScoped<IProducts, ProductsServices>();
+            services.AddScoped<IMailer, MailServices>();
             services.AddScoped(typeof(IGeneric<>), typeof(GenericServices<>));
             //services.AddScoped<IPost<Products>, PostServices<Products>>();
 
-            services.AddDbContext<VehicleApiContext>(options=> options.UseSqlServer(Configuration.GetConnectionString("VehicleConnection")));
+            services.AddDbContext<VehicleApiContext>(options => options.UseSqlServer(Configuration.GetConnectionString("VehicleConnection")));
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -72,7 +74,7 @@ namespace VehicleApi
                                   {
                                       builder.
                                       AllowAnyOrigin()
-                                     //WithOrigins("http://localhost:*")
+                                                          //WithOrigins("http://localhost:*")
                                                           .AllowAnyHeader()
                                                           .AllowAnyMethod();
                                   });
@@ -82,7 +84,7 @@ namespace VehicleApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -95,7 +97,12 @@ namespace VehicleApi
             }
             app.UseCors();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {

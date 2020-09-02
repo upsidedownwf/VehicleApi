@@ -13,7 +13,7 @@ using VehicleApiData.Interfaces;
 namespace VehicleApi.Controllers
 {
     [Route("api/sociallogin")]
-    public class SocialLoginController: Controller
+    public class SocialLoginController : Controller
     {
         private readonly IMapper mapper;
         private readonly ILogin _login;
@@ -67,9 +67,9 @@ namespace VehicleApi.Controllers
                 }
                 else
                 {
-                    if (check.FirstName == userresource.FirstName && check.LastName == userresource.LastName && userresource.ImageUrl== check.ImageUrl)
+                    if (check.FirstName == userresource.FirstName && check.LastName == userresource.LastName && userresource.ImageUrl == check.ImageUrl)
                     {
-                        
+
                     }
                     else
                     {

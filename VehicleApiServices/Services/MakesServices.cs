@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VehicleApiData.DomainModels;
 using VehicleApiData.Interfaces;
+using VehicleApiServices.HelperModels;
 
 namespace VehicleApiServices.Services
 {
@@ -25,11 +26,23 @@ namespace VehicleApiServices.Services
 
         public Make GetAllMakebyId(int ID)
         {
-            return _context.Makes.Include(m => m.Models). FirstOrDefault(x => x.Id == ID);
+            return _context.Makes.Include(m => m.Models).Wheres(x => x.Id == ID && x.Name != null).FirstorDefaults();
         }
 
-        public void SaveChanges()
+        private IEnumerable<Make> GetAllMakebyIdsss(int ID)
         {
+            return _context.Makes.Include(m => m.Models).Wheres(x => x.Id == ID && x.Name != null).Select(
+                x =>
+                new Make { Id = x.Id }
+            );
+        }
+        private Make Dic(int ID)
+        {
+            IDictionary<int, Make> dic = _context.Makes.Include(m => m.Models).Wheres(x => x.Id == ID && x.Name != null).ToDictionary(x => x.Id, x => x);
+            return dic[ID];
+        }
+        public void SaveChanges()
+        { 
             _context.SaveChanges();
         }
 
