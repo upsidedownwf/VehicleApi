@@ -22,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.FileProviders;
 
 namespace VehicleApi
 {
@@ -37,8 +38,10 @@ namespace VehicleApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddAutoMapper(typeof(Startup));
+            services.AddDirectoryBrowser();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -95,6 +98,25 @@ namespace VehicleApi
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            var defaultFileOptions = new DefaultFilesOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "files"))
+            };
+            defaultFileOptions.DefaultFileNames.Clear();
+            defaultFileOptions.DefaultFileNames.Add("TestDefault.html");
+            app.UseDefaultFiles(defaultFileOptions);
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "files"))
+            });
+            // app.UseStaticFiles();
+
+
+            //var xxxx = new FileServerOptions { EnableDirectoryBrowsing = true, FileProvider = new PhysicalFileProvider(Path.Combine(env.ContentRootPath, "files")) };
+            //xxxx.DefaultFilesOptions.DefaultFileNames.Clear();
+            //xxxx.DefaultFilesOptions.DefaultFileNames.Add("TestDefault.html");
+            //app.UseFileServer(xxxx);
+
             app.UseCors();
             app.UseHttpsRedirection();
             app.UseRouting();

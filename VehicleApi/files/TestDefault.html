@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width initial-scale=1" />
+    <title>Welcome Olamide!</title>
+    <style>
+        #loader{
+            height:80px;
+            width:80px;
+            border: 10px solid grey;
+            border-top-color: dodgerblue;
+            border-radius:50%;
+            margin:auto;
+            animation: 2s linear 0s infinite spin;
+        }
+        @keyframes spin{
+            0%{transform:rotate(0deg);}
+            100%{transform:rotate(360deg);}
+        }
+    </style>
+</head>
+<body style="display:flex; width:100vw;height:100vh;">
+    <div id="loader"></div>
+</body>
+</html>

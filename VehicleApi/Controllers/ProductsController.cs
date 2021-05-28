@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -28,36 +30,43 @@ namespace VehicleApi.Controllers
             this.mapper = mapper;
             this.post = post;
         }
-        //public IActionResult Get([FromQuery] PageParameters pageParameter, [FromHeader] string Pagination)
-        //{
-        //    //var model = new PageHeader();
-        //    //var models = new PageHeader();
-        //    //models=JsonConvert.DeserializeObject<PageHeader>(Pagination);
-        //    //JsonConvert.PopulateObject(Pagination, model);
-        //    var products = _products.GetAll();
-        //    var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
-        //    var pagedproducts = PagedList<ProductsResource>.ToPagedList(result.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
-        //    var metadata = new PageHeader
-        //    {
-        //        TotalCount= pagedproducts.TotalCount,
-        //        PageSize= pagedproducts.PageSize,
-        //        CurrentPage= pagedproducts.CurrentPage,
-        //        TotalPages=pagedproducts.TotalPages,
-        //        HasNext=pagedproducts.HasNext,
-        //        HasPrevious= pagedproducts.HasPrevious
-        //    };
+        [HttpGet, Route("[controller]")]
+        public IActionResult Get1([FromQuery] PageParameters pageParameter, [FromHeader] string Pagination)
+        {
+            //var model = new PageHeader();
+            //var models = new PageHeader();
+            //models=JsonConvert.DeserializeObject<PageHeader>(Pagination);
+            //JsonConvert.PopulateObject(Pagination, model);
+            var products = _products.GetAll();
+            var pagedproducts = PagedList<Products>.ToPagedList(products.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
+            var stringlist= new List<string>();
+            //for(var x = 0; x++ < 1000;)
+            //{
+            //    string p = new Random().ToString();
+            //    stringlist.Add(p);
+            //}
+            //var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
+            //var pagedproducts = PagedList<ProductsResource>.ToPagedList(result.AsQueryable(), pageParameter.PageNumber, pageParameter.PageSize);
+            var metadata = new PageHeader
+            {
+                TotalCount = pagedproducts.TotalCount,
+                PageSize = pagedproducts.PageSize,
+                CurrentPage = pagedproducts.CurrentPage,
+                TotalPages = pagedproducts.TotalPages,
+                HasNext = pagedproducts.HasNext,
+                HasPrevious = pagedproducts.HasPrevious
+            };
 
-        //    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
 
-        //    return Ok(pagedproducts);
-        //}
+            return Ok(pagedproducts);
+        }
         [HttpGet]
         public IActionResult Get([FromQuery] PageParameters pageParameter)
         {
-
             // Creates and initializes a new integer array and a new Object array.
             int[] myIntArray = new int[5] { 1, 2, 3, 4, 5 };
-            Object[] myObjArray = new Object[5] { 26, 27, 28, 29, 30 };
+            object[] myObjArray = new object[5] { 26, 27, 28, 29, 30 };
 
             // Prints the initial values of both arrays.
             Console.WriteLine("Initially,");
@@ -84,7 +93,8 @@ namespace VehicleApi.Controllers
             wasos.SetValue(new{b=1,c=2,d=32}, 0);
             waso.SetValue(new { b = 1, c = 2, d = 32 }, 1);
             waso.SetValue(new { b = 1, c = 2, d = 32 }, 2);
-
+            waso.SetValue(new { b = 1, c = 2, d = 32 }, 3);
+            waso.SetValue(new { b = 1, c = 2, d = 32 }, 4);
 
             var products = _products.GetAll();
             var result = mapper.Map<IEnumerable<Products>, IEnumerable<ProductsResource>>(products);
@@ -143,6 +153,13 @@ namespace VehicleApi.Controllers
             }
             else
                 post.Delete(product);
+            return Ok();
+
+        }
+        [HttpPatch]
+        public IActionResult Patch(JsonPatchDocument<CategoriesDto> categoriesDto)
+        {
+            var category = new CategoriesDto { Id = 1, Description = "Test", EnteredBy = "Olamide", Name = "Olamide" };
             return Ok();
 
         }

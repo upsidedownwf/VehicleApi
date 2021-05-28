@@ -26,6 +26,7 @@ namespace VehicleApiServices.Services
 
         public Make GetAllMakebyId(int ID)
         {
+            ExtensionMethod.Wheres(_context.Makes.Include(m => m.Models), x => x.Id == ID && x.Name != null);
             return _context.Makes.Include(m => m.Models).Wheres(x => x.Id == ID && x.Name != null).FirstorDefaults();
         }
 
@@ -55,6 +56,17 @@ namespace VehicleApiServices.Services
         {
             _context.Remove(make);
             SaveChanges();
+        }
+
+        public IEnumerable<Make> GetAllMakes1()
+        {
+            var getMakws = GetAllMakes();
+
+            foreach (var item in getMakws)
+            {
+                if (1 + 1 == 2)
+                    yield return item;
+            }
         }
     }
 }

@@ -20,18 +20,19 @@ namespace VehicleApiServices.HelperModels
 
                 throw new ArgumentNullException(nameof(predicate), "source");
             }
-
+            //var x = _context.Lead();
             foreach (T value in data)
             {
                 if (predicate(value)) yield return value;
             }
+         // yield return  default(T);
         }
         public static T FirstorDefaults<T>(this IEnumerable<T> data)
         {
             if (data.Any())return data.ToArray()[0];
             return default(T);
         }
-        public static T FirstorDefaults<T>(this IEnumerable<T> data, Func<T, bool> predicate)
+        public static T FirstorDefaults<T>(this IQueryable<T> data, Func<T, bool> predicate)
         {
             foreach (T value in data)
             {

@@ -18,18 +18,18 @@ namespace VehicleApi.Controllers
         {
             _mailer = mailer;
         }
-        [HttpGet]
-        public async Task<IActionResult> SendMailAsync(string email)
+        [HttpPost]
+        public async Task<IActionResult> SendMailAsync(Email email)
         {
-            var mail = new Email()
-            {
-                AddressTo = "ajumobiolamide@gmail.com",
-                Subject = "Activate your new Powersoft account",
-                Body = "<div><p>Hi " +
-                            ", your Powersoft account  has been created. We just need you to click on the link below to activate your account to complete your signup.<p><br/>" +
-                            "<p><a href=\"\"</a></p></div> "
-            };
-           var status=await Task.Run(()=>_mailer.SendMailAsync(mail));
+            //var mail = new Email()
+            //{
+            //    AddressTo = "ajumobiolamide@gmail.com",
+            //    Subject = "Activate your new Powersoft account",
+            //    Body = "<div><p>Hi " +
+            //                ", your Powersoft account  has been created. We just need you to click on the link below to activate your account to complete your signup.<p><br/>" +
+            //                "<p><a href=\"\"</a></p></div> "
+            //};
+           var status=await Task.Run(()=>_mailer.SendMailAsync(email));
             return Ok(status);
         }
     }

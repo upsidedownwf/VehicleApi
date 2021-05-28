@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using VehicleApiData.DomainModels;
 using VehicleApiData.Interfaces;
+using VehicleApiServices.HelperModels;
 
 namespace VehicleApiServices.Services
 {
@@ -31,7 +32,7 @@ namespace VehicleApiServices.Services
 
         public Categories GetCategoryById(int ID, string Name)
         {
-            return _context.Categories.FirstOrDefault(x=> x.Id== ID && x.Name==Name);
+            return _context.Categories.FirstorDefaults(x=> x.Id== ID && x.Name==Name);
         }
     }
 }

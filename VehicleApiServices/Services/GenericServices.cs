@@ -7,6 +7,7 @@ using VehicleApiData.Interfaces;
 using System.Linq.Expressions;
 using System.Linq;
 using System.Transactions;
+using System.Reflection;
 
 namespace VehicleApiServices.Services
 {
@@ -18,8 +19,6 @@ namespace VehicleApiServices.Services
         {
             _context = context;
         }
-
-
         public void Post(T model)
         {
             _context.Add(model);
@@ -30,6 +29,9 @@ namespace VehicleApiServices.Services
             // Type t = typeof(T);
             foreach (var property in model.GetType().GetProperties())
             {
+                var x=Assembly.GetExecutingAssembly().GetManifestResourceNames();
+                var y1= Assembly.GetExecutingAssembly().GetManifestResourceStream("");
+
                 var propertyvalue = property.GetValue(model);
                 if (propertyvalue != null)
                 {

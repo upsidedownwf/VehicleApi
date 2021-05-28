@@ -29,13 +29,13 @@ namespace VehicleApi.Controllers
             _makes = makes;
         }
        // MakesServices _makes = new MakesServices();
-        [HttpGet]
-        public IActionResult GetMakes()
-        {
-            var makes = _makes.GetAllMakes();
-            //ObservableCollection<Make> sessions = new ObservableCollection<Make>(makes);
-            return Ok(mapper.Map<IEnumerable<Make>, IEnumerable<MakeResource>>(makes));
-        }
+        //[HttpGet]
+        //public IActionResult GetMakes()
+        //{
+        //    var makes = _makes.GetAllMakes();
+        //    //ObservableCollection<Make> sessions = new ObservableCollection<Make>(makes);
+        //    return Ok(mapper.Map<IEnumerable<Make>, IEnumerable<MakeResource>>(makes));
+        //}
         [HttpGet("{id}")]
         public IActionResult GetMakeByID(int id)
         {
@@ -96,6 +96,24 @@ namespace VehicleApi.Controllers
             return Ok();
 
         }
+        [HttpGet]
+        public IActionResult GetAllMasskes()
+        {
+            var getMakws = _makes.GetAllMakes1();
 
+            return Ok(getMakws);
+        }
+
+        ////[HttpGet("wasoikeja")]
+        //private IEnumerable<Make> hhh()
+        //{
+        //    var getMakws = _makes.GetAllMakes();
+
+        //    foreach (var item in getMakws)
+        //    {
+        //        if (1 + 1 == 2)
+        //            yield return item;
+        //    }
+        //}
     }
 }

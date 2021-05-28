@@ -9,6 +9,7 @@ namespace VehicleApiData.Interfaces
     public interface IMakes
     {
         IEnumerable<Make> GetAllMakes();
+        IEnumerable<Make> GetAllMakes1();
         Make GetAllMakebyId(int ID);
         void SaveChanges();
         void AddMake(Make make);
